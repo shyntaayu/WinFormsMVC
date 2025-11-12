@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace WinFormsMVC.Models
 {
     // Service layer untuk business logic (Single Responsibility Principle)
+    // Contoh penggunaan CRUD dengan Entity Framework Core:
     public class MahasiswaService : IDisposable
     {
         private readonly MahasiswaRepository _repository;

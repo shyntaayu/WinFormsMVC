@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace WinFormsMVC.Models
 {
     // Concrete Repository - Inherit dari BaseRepository (Inheritance)
+    // Repository dengan Abstraction
     public class MahasiswaRepository : BaseRepository<Mahasiswa>
     {
         // Constructor

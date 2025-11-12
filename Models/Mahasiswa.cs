@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace WinFormsMVC.Models
 {
-    [Table("mahasiswa")]
+    // Ini adalah class yang merepresentasikan tabel mahasiswa di PostgreSQL
+    [Table("mahasiswa")] // Nama tabel di PostgreSQL (lowercase)
     public class Mahasiswa
     {
         // Properties dengan backing field untuk encapsulation
@@ -19,7 +20,7 @@ namespace WinFormsMVC.Models
         private double _ipk;
         private string _status;
 
-        [Key]
+        [Key] // Primary Key
         [Column("id")]
         public int Id
         {

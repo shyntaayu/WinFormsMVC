@@ -7,124 +7,227 @@ using WinFormsMVC.Models;
 
 namespace WinFormsMVC.Controllers
 {
-    public class MahasiswaController
+    // Controller bertanggung jawab mengatur alur antara View dan Model
+    public class MahasiswaController : IDisposable
     {
-        private MahasiswaService service;
+        private readonly MahasiswaService _service;
 
+        // Constructor dengan Dependency Injection
         public MahasiswaController()
         {
-            service = new MahasiswaService();
+            _service = new MahasiswaService();
         }
 
-        // Ambil semua mahasiswa
-        public List<Mahasiswa> GetAllMahasiswa()
+        public MahasiswaController(MahasiswaService service)
         {
-            return service.GetAllMahasiswa();
+            _service = service;
         }
 
-        // Tambah mahasiswa
-        public bool TambahMahasiswa(string nim, string nama, string jurusan, double ipk)
+        // CRUD Operations
+        public OperationResult<bool> TambahMahasiswa(string nim, string nama, string jurusan, double ipk)
         {
-            // Validasi input
-            if (string.IsNullOrWhiteSpace(nim))
-                throw new ArgumentException("NIM tidak boleh kosong");
-
-            if (string.IsNullOrWhiteSpace(nama))
-                throw new ArgumentException("Nama tidak boleh kosong");
-
-            if (string.IsNullOrWhiteSpace(jurusan))
-                throw new ArgumentException("Jurusan tidak boleh kosong");
-
-            if (ipk < 0 || ipk > 4)
-                throw new ArgumentException("IPK harus antara 0 - 4");
-
-            // Cek apakah NIM sudah ada
-            var existing = service.GetMahasiswaByNIM(nim);
-            if (existing != null)
-                throw new ArgumentException("NIM sudah terdaftar");
-
-            Mahasiswa mhs = new Mahasiswa
+            try
             {
-                NIM = nim,
-                Nama = nama,
-                Jurusan = jurusan,
-                IPK = ipk,
-                Status = "Aktif"
-            };
+                // Create new instance using constructor
+                var mahasiswa = new Mahasiswa(nim, nama, jurusan, ipk);
 
-            return service.TambahMahasiswa(mhs);
-        }
-
-        // Update mahasiswa
-        public bool UpdateMahasiswa(int id, string nim, string nama, string jurusan, double ipk, string status)
-        {
-            // Validasi input
-            if (string.IsNullOrWhiteSpace(nim))
-                throw new ArgumentException("NIM tidak boleh kosong");
-
-            if (string.IsNullOrWhiteSpace(nama))
-                throw new ArgumentException("Nama tidak boleh kosong");
-
-            if (ipk < 0 || ipk > 4)
-                throw new ArgumentException("IPK harus antara 0 - 4");
-
-            Mahasiswa mhs = new Mahasiswa
+                bool success = _service.TambahMahasiswa(mahasiswa);
+                return OperationResult<bool>.Success(success, "Data mahasiswa berhasil ditambahkan");
+            }
+            catch (Exception ex)
             {
-                Id = id,
-                NIM = nim,
-                Nama = nama,
-                Jurusan = jurusan,
-                IPK = ipk,
-                Status = status
+                return OperationResult<bool>.Failure(ex.Message);
+            }
+        }
+
+        public OperationResult<bool> UpdateMahasiswa(int id, string nim, string nama, string jurusan, double ipk, string status)
+        {
+            try
+            {
+                var mahasiswa = new Mahasiswa
+                {
+                    Id = id,
+                    NIM = nim,
+                    Nama = nama,
+                    Jurusan = jurusan,
+                    IPK = ipk,
+                    Status = status
+                };
+
+                bool success = _service.UpdateMahasiswa(mahasiswa);
+                return OperationResult<bool>.Success(success, "Data mahasiswa berhasil diupdate");
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.Failure(ex.Message);
+            }
+        }
+
+        public OperationResult<bool> HapusMahasiswa(int id)
+        {
+            try
+            {
+                bool success = _service.HapusMahasiswa(id);
+                if (success)
+                    return OperationResult<bool>.Success(true, "Data mahasiswa berhasil dihapus");
+                else
+                    return OperationResult<bool>.Failure("Mahasiswa tidak ditemukan");
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<bool>.Failure(ex.Message);
+            }
+        }
+
+        public OperationResult<Mahasiswa> GetMahasiswaById(int id)
+        {
+            try
+            {
+                var mahasiswa = _service.GetMahasiswaById(id);
+                if (mahasiswa != null)
+                    return OperationResult<Mahasiswa>.Success(mahasiswa);
+                else
+                    return OperationResult<Mahasiswa>.Failure("Mahasiswa tidak ditemukan");
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<Mahasiswa>.Failure(ex.Message);
+            }
+        }
+
+        public OperationResult<List<Mahasiswa>> GetAllMahasiswa()
+        {
+            try
+            {
+                var data = _service.GetAllMahasiswa();
+                return OperationResult<List<Mahasiswa>>.Success(data);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<List<Mahasiswa>>.Failure(ex.Message);
+            }
+        }
+
+        public OperationResult<List<Mahasiswa>> CariMahasiswa(string keyword)
+        {
+            try
+            {
+                var data = _service.CariMahasiswa(keyword);
+                return OperationResult<List<Mahasiswa>>.Success(data);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<List<Mahasiswa>>.Failure(ex.Message);
+            }
+        }
+
+        public OperationResult<List<Mahasiswa>> GetMahasiswaBerprestasi()
+        {
+            try
+            {
+                var data = _service.GetMahasiswaBerprestasi();
+                return OperationResult<List<Mahasiswa>>.Success(data);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<List<Mahasiswa>>.Failure(ex.Message);
+            }
+        }
+
+        public OperationResult<List<Mahasiswa>> FilterByJurusan(string jurusan)
+        {
+            try
+            {
+                var data = _service.GetMahasiswaByJurusan(jurusan);
+                return OperationResult<List<Mahasiswa>>.Success(data);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<List<Mahasiswa>>.Failure(ex.Message);
+            }
+        }
+
+        public OperationResult<List<Mahasiswa>> FilterByStatus(string status)
+        {
+            try
+            {
+                var data = _service.GetMahasiswaByStatus(status);
+                return OperationResult<List<Mahasiswa>>.Success(data);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<List<Mahasiswa>>.Failure(ex.Message);
+            }
+        }
+
+        public OperationResult<Dictionary<string, int>> GetStatistik()
+        {
+            try
+            {
+                var data = _service.GetStatistikPerJurusan();
+                return OperationResult<Dictionary<string, int>>.Success(data);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<Dictionary<string, int>>.Failure(ex.Message);
+            }
+        }
+
+        public OperationResult<Dictionary<string, double>> GetRataRataIPK()
+        {
+            try
+            {
+                var data = _service.GetRataRataIPKPerJurusan();
+                return OperationResult<Dictionary<string, double>>.Success(data);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<Dictionary<string, double>>.Failure(ex.Message);
+            }
+        }
+
+        public string GetStatusKelulusan(Mahasiswa mahasiswa)
+        {
+            return mahasiswa.GetStatusKelulusan();
+        }
+
+        public string GetGrade(Mahasiswa mahasiswa)
+        {
+            return mahasiswa.GetGrade();
+        }
+
+        // Dispose pattern
+        public void Dispose()
+        {
+            _service?.Dispose();
+        }
+    }
+
+    // Helper class untuk result operation (Best Practice)
+    public class OperationResult<T>
+    {
+        public bool IsSuccess { get; set; }
+        public string Message { get; set; }
+        public T Data { get; set; }
+
+        public static OperationResult<T> Success(T data, string message = "Operasi berhasil")
+        {
+            return new OperationResult<T>
+            {
+                IsSuccess = true,
+                Message = message,
+                Data = data
             };
-
-            return service.UpdateMahasiswa(mhs);
         }
 
-        // Hapus mahasiswa
-        public bool HapusMahasiswa(int id)
+        public static OperationResult<T> Failure(string message)
         {
-            return service.HapusMahasiswa(id);
-        }
-
-        // Cari mahasiswa
-        public List<Mahasiswa> CariMahasiswa(string keyword)
-        {
-            if (string.IsNullOrWhiteSpace(keyword))
-                return service.GetAllMahasiswa();
-
-            return service.CariMahasiswa(keyword);
-        }
-
-        // Get mahasiswa by ID
-        public Mahasiswa GetMahasiswaById(int id)
-        {
-            return service.GetMahasiswaById(id);
-        }
-
-        // Get mahasiswa berprestasi
-        public List<Mahasiswa> GetMahasiswaBerprestasi()
-        {
-            return service.GetMahasiswaBerprestasi();
-        }
-
-        // Filter by jurusan
-        public List<Mahasiswa> GetMahasiswaByJurusan(string jurusan)
-        {
-            return service.GetMahasiswaByJurusan(jurusan);
-        }
-
-        // Cek kelulusan
-        public string CekKelulusan(Mahasiswa mhs)
-        {
-            bool lulus = service.CekKelulusan(mhs);
-            return lulus ? "LULUS" : "TIDAK LULUS";
-        }
-
-        // Statistik
-        public Dictionary<string, int> GetStatistik()
-        {
-            return service.GetStatistikPerJurusan();
+            return new OperationResult<T>
+            {
+                IsSuccess = false,
+                Message = message,
+                Data = default(T)
+            };
         }
     }
 }

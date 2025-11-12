@@ -6,19 +6,34 @@ using System.Threading.Tasks;
 
 namespace WinFormsMVC.Models
 {
-    public class MahasiswaService
+    // Service layer untuk business logic (Single Responsibility Principle)
+    public class MahasiswaService : IDisposable
     {
-        // CREATE - Tambah mahasiswa baru
-        public bool TambahMahasiswa(Mahasiswa mhs)
+        private readonly MahasiswaRepository _repository;
+
+        // Dependency Injection via Constructor
+        public MahasiswaService()
+        {
+            _repository = new MahasiswaRepository();
+        }
+
+        public MahasiswaService(MahasiswaRepository repository)
+        {
+            _repository = repository;
+        }
+
+        // CRUD Operations dengan business logic
+        public bool TambahMahasiswa(Mahasiswa mahasiswa)
         {
             try
             {
-                using (var context = new KampusDbContext())
+                // Validasi business rules
+                if (!mahasiswa.IsValid(out string errorMessage))
                 {
-                    context.Mahasiswa.Add(mhs);
-                    context.SaveChanges();
-                    return true;
+                    throw new ArgumentException(errorMessage);
                 }
+
+                return _repository.Add(mahasiswa);
             }
             catch (Exception ex)
             {
@@ -26,65 +41,30 @@ namespace WinFormsMVC.Models
             }
         }
 
-        // READ - Ambil semua mahasiswa
-        public List<Mahasiswa> GetAllMahasiswa()
+        public bool UpdateMahasiswa(Mahasiswa mahasiswa)
         {
             try
             {
-                using (var context = new KampusDbContext())
+                if (!mahasiswa.IsValid(out string errorMessage))
                 {
-                    return context.Mahasiswa.ToList();
+                    throw new ArgumentException(errorMessage);
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Gagal mengambil data: {ex.Message}");
-            }
-        }
 
-        // READ - Ambil mahasiswa by ID
-        public Mahasiswa GetMahasiswaById(int id)
-        {
-            try
-            {
-                using (var context = new KampusDbContext())
+                // Get existing data from database
+                var existing = _repository.GetById(mahasiswa.Id);
+                if (existing == null)
                 {
-                    return context.Mahasiswa.Find(id);
+                    throw new ArgumentException("Data mahasiswa tidak ditemukan");
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Gagal mengambil data: {ex.Message}");
-            }
-        }
 
-        // READ - Cari mahasiswa by NIM
-        public Mahasiswa GetMahasiswaByNIM(string nim)
-        {
-            try
-            {
-                using (var context = new KampusDbContext())
-                {
-                    return context.Mahasiswa.FirstOrDefault(m => m.NIM == nim);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Gagal mencari mahasiswa: {ex.Message}");
-            }
-        }
+                // Update properties one by one
+                existing.NIM = mahasiswa.NIM;
+                existing.Nama = mahasiswa.Nama;
+                existing.Jurusan = mahasiswa.Jurusan;
+                existing.IPK = mahasiswa.IPK;
+                existing.Status = mahasiswa.Status;
 
-        // UPDATE - Update mahasiswa
-        public bool UpdateMahasiswa(Mahasiswa mhs)
-        {
-            try
-            {
-                using (var context = new KampusDbContext())
-                {
-                    context.Mahasiswa.Update(mhs);
-                    context.SaveChanges();
-                    return true;
-                }
+                return _repository.Update(existing);
             }
             catch (Exception ex)
             {
@@ -92,22 +72,11 @@ namespace WinFormsMVC.Models
             }
         }
 
-        // DELETE - Hapus mahasiswa
         public bool HapusMahasiswa(int id)
         {
             try
             {
-                using (var context = new KampusDbContext())
-                {
-                    var mhs = context.Mahasiswa.Find(id);
-                    if (mhs != null)
-                    {
-                        context.Mahasiswa.Remove(mhs);
-                        context.SaveChanges();
-                        return true;
-                    }
-                    return false;
-                }
+                return _repository.Delete(id);
             }
             catch (Exception ex)
             {
@@ -115,18 +84,11 @@ namespace WinFormsMVC.Models
             }
         }
 
-        // Cari mahasiswa berprestasi (IPK >= 3.0)
-        public List<Mahasiswa> GetMahasiswaBerprestasi()
+        public Mahasiswa GetMahasiswaById(int id)
         {
             try
             {
-                using (var context = new KampusDbContext())
-                {
-                    return context.Mahasiswa
-                                  .Where(m => m.Status == "Aktif" && m.IPK >= 3.0)
-                                  .OrderByDescending(m => m.IPK)
-                                  .ToList();
-                }
+                return _repository.GetById(id);
             }
             catch (Exception ex)
             {
@@ -134,18 +96,11 @@ namespace WinFormsMVC.Models
             }
         }
 
-        // Filter by jurusan
-        public List<Mahasiswa> GetMahasiswaByJurusan(string jurusan)
+        public Mahasiswa GetMahasiswaByNIM(string nim)
         {
             try
             {
-                using (var context = new KampusDbContext())
-                {
-                    return context.Mahasiswa
-                                  .Where(m => m.Jurusan == jurusan)
-                                  .OrderBy(m => m.Nama)
-                                  .ToList();
-                }
+                return _repository.GetByNIM(nim);
             }
             catch (Exception ex)
             {
@@ -153,19 +108,26 @@ namespace WinFormsMVC.Models
             }
         }
 
-        // Cari mahasiswa (search)
+        public List<Mahasiswa> GetAllMahasiswa()
+        {
+            try
+            {
+                return _repository.GetAll();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Gagal mengambil data: {ex.Message}");
+            }
+        }
+
         public List<Mahasiswa> CariMahasiswa(string keyword)
         {
             try
             {
-                using (var context = new KampusDbContext())
-                {
-                    return context.Mahasiswa
-                                  .Where(m => m.NIM.Contains(keyword) ||
-                                             m.Nama.Contains(keyword) ||
-                                             m.Jurusan.Contains(keyword))
-                                  .ToList();
-                }
+                if (string.IsNullOrWhiteSpace(keyword))
+                    return GetAllMahasiswa();
+
+                return _repository.Search(keyword);
             }
             catch (Exception ex)
             {
@@ -173,28 +135,152 @@ namespace WinFormsMVC.Models
             }
         }
 
-        // Logika bisnis: Cek kelulusan
-        public bool CekKelulusan(Mahasiswa mhs)
+        public List<Mahasiswa> GetMahasiswaBerprestasi()
         {
-            return mhs.IPK >= 2.75;
+            try
+            {
+                return _repository.GetMahasiswaBerprestasi();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Gagal mengambil data: {ex.Message}");
+            }
         }
 
-        // Statistik per jurusan
+        public List<Mahasiswa> GetMahasiswaByJurusan(string jurusan)
+        {
+            try
+            {
+                return _repository.GetByJurusan(jurusan);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Gagal mengambil data: {ex.Message}");
+            }
+        }
+
+        public List<Mahasiswa> GetMahasiswaByStatus(string status)
+        {
+            try
+            {
+                return _repository.GetByStatus(status);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Gagal mengambil data: {ex.Message}");
+            }
+        }
+
+        public List<Mahasiswa> GetMahasiswaTidakLulus()
+        {
+            try
+            {
+                return _repository.GetMahasiswaTidakLulus();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Gagal mengambil data: {ex.Message}");
+            }
+        }
+
+        // Business Logic Methods
+        public bool ValidasiKelulusan(Mahasiswa mahasiswa)
+        {
+            return mahasiswa.IsLulus();
+        }
+
+        public string GetStatusKelulusan(Mahasiswa mahasiswa)
+        {
+            return mahasiswa.GetStatusKelulusan();
+        }
+
+        public bool UpdateIPK(int id, double ipkBaru)
+        {
+            try
+            {
+                var mahasiswa = _repository.GetById(id);
+                if (mahasiswa == null)
+                    throw new ArgumentException("Mahasiswa tidak ditemukan");
+
+                mahasiswa.IPK = ipkBaru;
+                return _repository.Update(mahasiswa);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Gagal update IPK: {ex.Message}");
+            }
+        }
+
+        public bool UpdateStatus(int id, string statusBaru)
+        {
+            try
+            {
+                var mahasiswa = _repository.GetById(id);
+                if (mahasiswa == null)
+                    throw new ArgumentException("Mahasiswa tidak ditemukan");
+
+                mahasiswa.Status = statusBaru;
+                return _repository.Update(mahasiswa);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Gagal update status: {ex.Message}");
+            }
+        }
+
+        // Statistik Methods
         public Dictionary<string, int> GetStatistikPerJurusan()
         {
             try
             {
-                using (var context = new KampusDbContext())
-                {
-                    return context.Mahasiswa
-                                  .GroupBy(m => m.Jurusan)
-                                  .ToDictionary(g => g.Key, g => g.Count());
-                }
+                return _repository.GetStatistikPerJurusan();
             }
             catch (Exception ex)
             {
                 throw new Exception($"Gagal mengambil statistik: {ex.Message}");
             }
+        }
+
+        public Dictionary<string, double> GetRataRataIPKPerJurusan()
+        {
+            try
+            {
+                return _repository.GetRataRataIPKPerJurusan();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Gagal mengambil rata-rata IPK: {ex.Message}");
+            }
+        }
+
+        public int GetTotalMahasiswa()
+        {
+            try
+            {
+                return _repository.GetAll().Count;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Gagal mengambil total: {ex.Message}");
+            }
+        }
+
+        public int GetTotalMahasiswaAktif()
+        {
+            try
+            {
+                return _repository.GetByStatus("Aktif").Count;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Gagal mengambil total: {ex.Message}");
+            }
+        }
+
+        // Dispose pattern
+        public void Dispose()
+        {
+            _repository?.Dispose();
         }
     }
 }

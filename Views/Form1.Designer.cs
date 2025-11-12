@@ -34,6 +34,7 @@
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button btnBerprestasi;
         private System.Windows.Forms.Button btnStatistik;
+        private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Label lblNIM;
         private System.Windows.Forms.Label lblNama;
         private System.Windows.Forms.Label lblJurusan;
@@ -44,287 +45,301 @@
 
         private void InitializeComponent()
         {
-            this.dgvMahasiswa = new System.Windows.Forms.DataGridView();
-            this.txtNIM = new System.Windows.Forms.TextBox();
-            this.txtNama = new System.Windows.Forms.TextBox();
-            this.cboJurusan = new System.Windows.Forms.ComboBox();
-            this.txtIPK = new System.Windows.Forms.TextBox();
-            this.cboStatus = new System.Windows.Forms.ComboBox();
-            this.txtCari = new System.Windows.Forms.TextBox();
-            this.btnTambah = new System.Windows.Forms.Button();
-            this.btnUpdate = new System.Windows.Forms.Button();
-            this.btnHapus = new System.Windows.Forms.Button();
-            this.btnCari = new System.Windows.Forms.Button();
-            this.btnRefresh = new System.Windows.Forms.Button();
-            this.btnBerprestasi = new System.Windows.Forms.Button();
-            this.btnStatistik = new System.Windows.Forms.Button();
-            this.lblNIM = new System.Windows.Forms.Label();
-            this.lblNama = new System.Windows.Forms.Label();
-            this.lblJurusan = new System.Windows.Forms.Label();
-            this.lblIPK = new System.Windows.Forms.Label();
-            this.lblStatus = new System.Windows.Forms.Label();
-            this.grpData = new System.Windows.Forms.GroupBox();
-            this.grpAksi = new System.Windows.Forms.GroupBox();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMahasiswa)).BeginInit();
-            this.grpData.SuspendLayout();
-            this.grpAksi.SuspendLayout();
-            this.SuspendLayout();
-
+            dgvMahasiswa = new DataGridView();
+            txtNIM = new TextBox();
+            txtNama = new TextBox();
+            cboJurusan = new ComboBox();
+            txtIPK = new TextBox();
+            cboStatus = new ComboBox();
+            txtCari = new TextBox();
+            btnTambah = new Button();
+            btnUpdate = new Button();
+            btnHapus = new Button();
+            btnCari = new Button();
+            btnRefresh = new Button();
+            btnBerprestasi = new Button();
+            btnStatistik = new Button();
+            btnClear = new Button();
+            lblNIM = new Label();
+            lblNama = new Label();
+            lblJurusan = new Label();
+            lblIPK = new Label();
+            lblStatus = new Label();
+            grpData = new GroupBox();
+            grpAksi = new GroupBox();
+            ((System.ComponentModel.ISupportInitialize)dgvMahasiswa).BeginInit();
+            grpData.SuspendLayout();
+            grpAksi.SuspendLayout();
+            SuspendLayout();
             // 
             // dgvMahasiswa
             // 
-            this.dgvMahasiswa.AllowUserToAddRows = false;
-            this.dgvMahasiswa.AllowUserToDeleteRows = false;
-            this.dgvMahasiswa.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvMahasiswa.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMahasiswa.Location = new System.Drawing.Point(12, 200);
-            this.dgvMahasiswa.Name = "dgvMahasiswa";
-            this.dgvMahasiswa.ReadOnly = true;
-            this.dgvMahasiswa.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMahasiswa.Size = new System.Drawing.Size(776, 300);
-            this.dgvMahasiswa.TabIndex = 0;
-            this.dgvMahasiswa.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMahasiswa_CellClick);
-
-            // 
-            // grpData
-            // 
-            this.grpData.Controls.Add(this.lblNIM);
-            this.grpData.Controls.Add(this.txtNIM);
-            this.grpData.Controls.Add(this.lblNama);
-            this.grpData.Controls.Add(this.txtNama);
-            this.grpData.Controls.Add(this.lblJurusan);
-            this.grpData.Controls.Add(this.cboJurusan);
-            this.grpData.Controls.Add(this.lblIPK);
-            this.grpData.Controls.Add(this.txtIPK);
-            this.grpData.Controls.Add(this.lblStatus);
-            this.grpData.Controls.Add(this.cboStatus);
-            this.grpData.Location = new System.Drawing.Point(12, 12);
-            this.grpData.Name = "grpData";
-            this.grpData.Size = new System.Drawing.Size(500, 180);
-            this.grpData.TabIndex = 1;
-            this.grpData.TabStop = false;
-            this.grpData.Text = "Data Mahasiswa";
-
-            // 
-            // lblNIM
-            // 
-            this.lblNIM.AutoSize = true;
-            this.lblNIM.Location = new System.Drawing.Point(20, 30);
-            this.lblNIM.Name = "lblNIM";
-            this.lblNIM.Size = new System.Drawing.Size(31, 13);
-            this.lblNIM.Text = "NIM:";
-
+            dgvMahasiswa.AllowUserToAddRows = false;
+            dgvMahasiswa.AllowUserToDeleteRows = false;
+            dgvMahasiswa.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvMahasiswa.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvMahasiswa.Location = new Point(20, 436);
+            dgvMahasiswa.Margin = new Padding(5, 6, 5, 6);
+            dgvMahasiswa.Name = "dgvMahasiswa";
+            dgvMahasiswa.ReadOnly = true;
+            dgvMahasiswa.RowHeadersWidth = 62;
+            dgvMahasiswa.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvMahasiswa.Size = new Size(1293, 253);
+            dgvMahasiswa.TabIndex = 0;
+            dgvMahasiswa.CellClick += dgvMahasiswa_CellClick;
             // 
             // txtNIM
             // 
-            this.txtNIM.Location = new System.Drawing.Point(100, 27);
-            this.txtNIM.Name = "txtNIM";
-            this.txtNIM.Size = new System.Drawing.Size(380, 20);
-            this.txtNIM.TabIndex = 0;
-
-            // 
-            // lblNama
-            // 
-            this.lblNama.AutoSize = true;
-            this.lblNama.Location = new System.Drawing.Point(20, 60);
-            this.lblNama.Name = "lblNama";
-            this.lblNama.Size = new System.Drawing.Size(38, 13);
-            this.lblNama.Text = "Nama:";
-
+            txtNIM.Location = new Point(167, 52);
+            txtNIM.Margin = new Padding(5, 6, 5, 6);
+            txtNIM.Name = "txtNIM";
+            txtNIM.Size = new Size(631, 31);
+            txtNIM.TabIndex = 0;
             // 
             // txtNama
             // 
-            this.txtNama.Location = new System.Drawing.Point(100, 57);
-            this.txtNama.Name = "txtNama";
-            this.txtNama.Size = new System.Drawing.Size(380, 20);
-            this.txtNama.TabIndex = 1;
-
-            // 
-            // lblJurusan
-            // 
-            this.lblJurusan.AutoSize = true;
-            this.lblJurusan.Location = new System.Drawing.Point(20, 90);
-            this.lblJurusan.Name = "lblJurusan";
-            this.lblJurusan.Size = new System.Drawing.Size(50, 13);
-            this.lblJurusan.Text = "Jurusan:";
-
+            txtNama.Location = new Point(167, 110);
+            txtNama.Margin = new Padding(5, 6, 5, 6);
+            txtNama.Name = "txtNama";
+            txtNama.Size = new Size(631, 31);
+            txtNama.TabIndex = 1;
             // 
             // cboJurusan
             // 
-            this.cboJurusan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboJurusan.FormattingEnabled = true;
-            this.cboJurusan.Items.AddRange(new object[] {
-            "Informatika",
-            "Sistem Informasi",
-            "Teknologi Informasi"});
-            this.cboJurusan.Location = new System.Drawing.Point(100, 87);
-            this.cboJurusan.Name = "cboJurusan";
-            this.cboJurusan.Size = new System.Drawing.Size(380, 21);
-            this.cboJurusan.TabIndex = 2;
-
-            // 
-            // lblIPK
-            // 
-            this.lblIPK.AutoSize = true;
-            this.lblIPK.Location = new System.Drawing.Point(20, 120);
-            this.lblIPK.Name = "lblIPK";
-            this.lblIPK.Size = new System.Drawing.Size(28, 13);
-            this.lblIPK.Text = "IPK:";
-
+            cboJurusan.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboJurusan.FormattingEnabled = true;
+            cboJurusan.Items.AddRange(new object[] { "Informatika", "Sistem Informasi", "Teknologi Informasi" });
+            cboJurusan.Location = new Point(167, 167);
+            cboJurusan.Margin = new Padding(5, 6, 5, 6);
+            cboJurusan.Name = "cboJurusan";
+            cboJurusan.Size = new Size(631, 33);
+            cboJurusan.TabIndex = 2;
             // 
             // txtIPK
             // 
-            this.txtIPK.Location = new System.Drawing.Point(100, 117);
-            this.txtIPK.Name = "txtIPK";
-            this.txtIPK.Size = new System.Drawing.Size(380, 20);
-            this.txtIPK.TabIndex = 3;
-
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(20, 150);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(40, 13);
-            this.lblStatus.Text = "Status:";
-
+            txtIPK.Location = new Point(167, 225);
+            txtIPK.Margin = new Padding(5, 6, 5, 6);
+            txtIPK.Name = "txtIPK";
+            txtIPK.Size = new Size(631, 31);
+            txtIPK.TabIndex = 3;
             // 
             // cboStatus
             // 
-            this.cboStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboStatus.FormattingEnabled = true;
-            this.cboStatus.Items.AddRange(new object[] {
-            "Aktif",
-            "Cuti",
-            "Lulus",
-            "Keluar"});
-            this.cboStatus.Location = new System.Drawing.Point(100, 147);
-            this.cboStatus.Name = "cboStatus";
-            this.cboStatus.Size = new System.Drawing.Size(380, 21);
-            this.cboStatus.TabIndex = 4;
-
-            // 
-            // grpAksi
-            // 
-            this.grpAksi.Controls.Add(this.btnTambah);
-            this.grpAksi.Controls.Add(this.btnUpdate);
-            this.grpAksi.Controls.Add(this.btnHapus);
-            this.grpAksi.Controls.Add(this.btnBerprestasi);
-            this.grpAksi.Controls.Add(this.btnStatistik);
-            this.grpAksi.Location = new System.Drawing.Point(520, 12);
-            this.grpAksi.Name = "grpAksi";
-            this.grpAksi.Size = new System.Drawing.Size(268, 180);
-            this.grpAksi.TabIndex = 2;
-            this.grpAksi.TabStop = false;
-            this.grpAksi.Text = "Aksi";
-
-            // 
-            // btnTambah
-            // 
-            this.btnTambah.Location = new System.Drawing.Point(20, 27);
-            this.btnTambah.Name = "btnTambah";
-            this.btnTambah.Size = new System.Drawing.Size(228, 23);
-            this.btnTambah.TabIndex = 0;
-            this.btnTambah.Text = "Tambah";
-            this.btnTambah.UseVisualStyleBackColor = true;
-            this.btnTambah.Click += new System.EventHandler(this.btnTambah_Click);
-
-            // 
-            // btnUpdate
-            // 
-            this.btnUpdate.Location = new System.Drawing.Point(20, 57);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(228, 23);
-            this.btnUpdate.TabIndex = 1;
-            this.btnUpdate.Text = "Update";
-            this.btnUpdate.UseVisualStyleBackColor = true;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
-
-            // 
-            // btnHapus
-            // 
-            this.btnHapus.Location = new System.Drawing.Point(20, 87);
-            this.btnHapus.Name = "btnHapus";
-            this.btnHapus.Size = new System.Drawing.Size(228, 23);
-            this.btnHapus.TabIndex = 2;
-            this.btnHapus.Text = "Hapus";
-            this.btnHapus.UseVisualStyleBackColor = true;
-            this.btnHapus.Click += new System.EventHandler(this.btnHapus_Click);
-
-            // 
-            // btnBerprestasi
-            // 
-            this.btnBerprestasi.Location = new System.Drawing.Point(20, 117);
-            this.btnBerprestasi.Name = "btnBerprestasi";
-            this.btnBerprestasi.Size = new System.Drawing.Size(228, 23);
-            this.btnBerprestasi.TabIndex = 3;
-            this.btnBerprestasi.Text = "Mahasiswa Berprestasi";
-            this.btnBerprestasi.UseVisualStyleBackColor = true;
-            this.btnBerprestasi.Click += new System.EventHandler(this.btnBerprestasi_Click);
-
-            // 
-            // btnStatistik
-            // 
-            this.btnStatistik.Location = new System.Drawing.Point(20, 147);
-            this.btnStatistik.Name = "btnStatistik";
-            this.btnStatistik.Size = new System.Drawing.Size(228, 23);
-            this.btnStatistik.TabIndex = 4;
-            this.btnStatistik.Text = "Lihat Statistik";
-            this.btnStatistik.UseVisualStyleBackColor = true;
-            this.btnStatistik.Click += new System.EventHandler(this.btnStatistik_Click);
-
+            cboStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboStatus.FormattingEnabled = true;
+            cboStatus.Items.AddRange(new object[] { "Aktif", "Cuti", "Lulus", "Keluar" });
+            cboStatus.Location = new Point(167, 283);
+            cboStatus.Margin = new Padding(5, 6, 5, 6);
+            cboStatus.Name = "cboStatus";
+            cboStatus.Size = new Size(631, 33);
+            cboStatus.TabIndex = 4;
             // 
             // txtCari
             // 
-            this.txtCari.Location = new System.Drawing.Point(12, 510);
-            this.txtCari.Name = "txtCari";
-            this.txtCari.Size = new System.Drawing.Size(600, 20);
-            this.txtCari.TabIndex = 3;
-
+            txtCari.Location = new Point(26, 720);
+            txtCari.Margin = new Padding(5, 6, 5, 6);
+            txtCari.Name = "txtCari";
+            txtCari.Size = new Size(997, 31);
+            txtCari.TabIndex = 3;
+            // 
+            // btnTambah
+            // 
+            btnTambah.Location = new Point(33, 52);
+            btnTambah.Margin = new Padding(5, 6, 5, 6);
+            btnTambah.Name = "btnTambah";
+            btnTambah.Size = new Size(380, 44);
+            btnTambah.TabIndex = 0;
+            btnTambah.Text = "Tambah";
+            btnTambah.UseVisualStyleBackColor = true;
+            btnTambah.Click += btnTambah_Click;
+            // 
+            // btnUpdate
+            // 
+            btnUpdate.Location = new Point(33, 110);
+            btnUpdate.Margin = new Padding(5, 6, 5, 6);
+            btnUpdate.Name = "btnUpdate";
+            btnUpdate.Size = new Size(380, 44);
+            btnUpdate.TabIndex = 1;
+            btnUpdate.Text = "Update";
+            btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.Click += btnUpdate_Click;
+            // 
+            // btnHapus
+            // 
+            btnHapus.Location = new Point(33, 167);
+            btnHapus.Margin = new Padding(5, 6, 5, 6);
+            btnHapus.Name = "btnHapus";
+            btnHapus.Size = new Size(380, 44);
+            btnHapus.TabIndex = 2;
+            btnHapus.Text = "Hapus";
+            btnHapus.UseVisualStyleBackColor = true;
+            btnHapus.Click += btnHapus_Click;
             // 
             // btnCari
             // 
-            this.btnCari.Location = new System.Drawing.Point(620, 508);
-            this.btnCari.Name = "btnCari";
-            this.btnCari.Size = new System.Drawing.Size(80, 23);
-            this.btnCari.TabIndex = 4;
-                this.btnCari.Text = "Cari";
-            this.btnCari.UseVisualStyleBackColor = true;
-            this.btnCari.Click += new System.EventHandler(this.btnCari_Click);
-
+            btnCari.Location = new Point(1039, 716);
+            btnCari.Margin = new Padding(5, 6, 5, 6);
+            btnCari.Name = "btnCari";
+            btnCari.Size = new Size(133, 44);
+            btnCari.TabIndex = 4;
+            btnCari.Text = "Cari";
+            btnCari.UseVisualStyleBackColor = true;
+            btnCari.Click += btnCari_Click;
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(708, 508);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(80, 23);
-            this.btnRefresh.TabIndex = 5;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-
+            btnRefresh.Location = new Point(1186, 716);
+            btnRefresh.Margin = new Padding(5, 6, 5, 6);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(133, 44);
+            btnRefresh.TabIndex = 5;
+            btnRefresh.Text = "Refresh";
+            btnRefresh.UseVisualStyleBackColor = true;
+            btnRefresh.Click += btnRefresh_Click;
             // 
-            // FormMahasiswa
+            // btnBerprestasi
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 550);
-            this.Controls.Add(this.btnRefresh);
-            this.Controls.Add(this.btnCari);
-            this.Controls.Add(this.txtCari);
-            this.Controls.Add(this.grpAksi);
-            this.Controls.Add(this.grpData);
-            this.Controls.Add(this.dgvMahasiswa);
-            this.Name = "FormMahasiswa";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Aplikasi Data Mahasiswa - FASILKOM UNEJ";
-            this.Load += new System.EventHandler(this.FormMahasiswa_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMahasiswa)).EndInit();
-            this.grpData.ResumeLayout(false);
-            this.grpData.PerformLayout();
-            this.grpAksi.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            btnBerprestasi.Location = new Point(33, 225);
+            btnBerprestasi.Margin = new Padding(5, 6, 5, 6);
+            btnBerprestasi.Name = "btnBerprestasi";
+            btnBerprestasi.Size = new Size(380, 44);
+            btnBerprestasi.TabIndex = 3;
+            btnBerprestasi.Text = "Mahasiswa Berprestasi";
+            btnBerprestasi.UseVisualStyleBackColor = true;
+            btnBerprestasi.Click += btnBerprestasi_Click;
+            // 
+            // btnStatistik
+            // 
+            btnStatistik.Location = new Point(33, 283);
+            btnStatistik.Margin = new Padding(5, 6, 5, 6);
+            btnStatistik.Name = "btnStatistik";
+            btnStatistik.Size = new Size(380, 44);
+            btnStatistik.TabIndex = 4;
+            btnStatistik.Text = "Lihat Statistik";
+            btnStatistik.UseVisualStyleBackColor = true;
+            btnStatistik.Click += btnStatistik_Click;
+            // 
+            // btnClear
+            // 
+            btnClear.Location = new Point(33, 341);
+            btnClear.Margin = new Padding(5, 6, 5, 6);
+            btnClear.Name = "btnClear";
+            btnClear.Size = new Size(380, 44);
+            btnClear.TabIndex = 4;
+            btnClear.Text = "Clear";
+            btnClear.UseVisualStyleBackColor = true;
+            btnClear.Click += ClearForm_Click;
+            // 
+            // lblNIM
+            // 
+            lblNIM.AutoSize = true;
+            lblNIM.Location = new Point(33, 58);
+            lblNIM.Margin = new Padding(5, 0, 5, 0);
+            lblNIM.Name = "lblNIM";
+            lblNIM.Size = new Size(50, 25);
+            lblNIM.TabIndex = 0;
+            lblNIM.Text = "NIM:";
+            // 
+            // lblNama
+            // 
+            lblNama.AutoSize = true;
+            lblNama.Location = new Point(33, 115);
+            lblNama.Margin = new Padding(5, 0, 5, 0);
+            lblNama.Name = "lblNama";
+            lblNama.Size = new Size(63, 25);
+            lblNama.TabIndex = 1;
+            lblNama.Text = "Nama:";
+            // 
+            // lblJurusan
+            // 
+            lblJurusan.AutoSize = true;
+            lblJurusan.Location = new Point(33, 173);
+            lblJurusan.Margin = new Padding(5, 0, 5, 0);
+            lblJurusan.Name = "lblJurusan";
+            lblJurusan.Size = new Size(75, 25);
+            lblJurusan.TabIndex = 2;
+            lblJurusan.Text = "Jurusan:";
+            // 
+            // lblIPK
+            // 
+            lblIPK.AutoSize = true;
+            lblIPK.Location = new Point(33, 231);
+            lblIPK.Margin = new Padding(5, 0, 5, 0);
+            lblIPK.Name = "lblIPK";
+            lblIPK.Size = new Size(41, 25);
+            lblIPK.TabIndex = 3;
+            lblIPK.Text = "IPK:";
+            // 
+            // lblStatus
+            // 
+            lblStatus.AutoSize = true;
+            lblStatus.Location = new Point(33, 288);
+            lblStatus.Margin = new Padding(5, 0, 5, 0);
+            lblStatus.Name = "lblStatus";
+            lblStatus.Size = new Size(64, 25);
+            lblStatus.TabIndex = 4;
+            lblStatus.Text = "Status:";
+            // 
+            // grpData
+            // 
+            grpData.Controls.Add(lblNIM);
+            grpData.Controls.Add(txtNIM);
+            grpData.Controls.Add(lblNama);
+            grpData.Controls.Add(txtNama);
+            grpData.Controls.Add(lblJurusan);
+            grpData.Controls.Add(cboJurusan);
+            grpData.Controls.Add(lblIPK);
+            grpData.Controls.Add(txtIPK);
+            grpData.Controls.Add(lblStatus);
+            grpData.Controls.Add(cboStatus);
+            grpData.Location = new Point(20, 23);
+            grpData.Margin = new Padding(5, 6, 5, 6);
+            grpData.Name = "grpData";
+            grpData.Padding = new Padding(5, 6, 5, 6);
+            grpData.Size = new Size(833, 401);
+            grpData.TabIndex = 1;
+            grpData.TabStop = false;
+            grpData.Text = "Data Mahasiswa";
+            // 
+            // grpAksi
+            // 
+            grpAksi.Controls.Add(btnTambah);
+            grpAksi.Controls.Add(btnUpdate);
+            grpAksi.Controls.Add(btnHapus);
+            grpAksi.Controls.Add(btnBerprestasi);
+            grpAksi.Controls.Add(btnStatistik);
+            grpAksi.Controls.Add(btnClear);
+            grpAksi.Location = new Point(867, 23);
+            grpAksi.Margin = new Padding(5, 6, 5, 6);
+            grpAksi.Name = "grpAksi";
+            grpAksi.Padding = new Padding(5, 6, 5, 6);
+            grpAksi.Size = new Size(447, 401);
+            grpAksi.TabIndex = 2;
+            grpAksi.TabStop = false;
+            grpAksi.Text = "Aksi";
+            // 
+            // Form1
+            // 
+            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1333, 779);
+            Controls.Add(btnRefresh);
+            Controls.Add(btnCari);
+            Controls.Add(txtCari);
+            Controls.Add(grpAksi);
+            Controls.Add(grpData);
+            Controls.Add(dgvMahasiswa);
+            Margin = new Padding(5, 6, 5, 6);
+            Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Aplikasi Data Mahasiswa - FASILKOM UNEJ";
+            Load += Form1_Load;
+            ((System.ComponentModel.ISupportInitialize)dgvMahasiswa).EndInit();
+            grpData.ResumeLayout(false);
+            grpData.PerformLayout();
+            grpAksi.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
     }
 }
